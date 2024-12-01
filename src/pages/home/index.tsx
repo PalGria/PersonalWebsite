@@ -1,6 +1,6 @@
 import React from 'react';
 import Hero from '../../components/hero/hero';
-
+import About from './components/about/about';
 const Home: React.FC = () => {
   const heroData = {
     title: "Hi, I'm Jose",
@@ -10,7 +10,7 @@ const Home: React.FC = () => {
     //image: "https://via.placeholder.com/1920x1080.png?text=Hero+Image",
     //video: "https://www.w3schools.com/html/mov_bbb.mp4",
     backgroundColor: "#4a90e2",
-    twitterLink: 'https://twitter.com',
+    twitterLink: 'https://twitter.com/palau_alegria',
     linkedinLink: 'https://www.linkedin.com/in/jmpa/',
     githubLink: 'https://github.com/PalGria',
   };
@@ -18,7 +18,7 @@ const Home: React.FC = () => {
   return (
     <>
       <Hero {...heroData} />
-      <div className="text-center text-2xl">Home Page</div>
+      <About />      
     </>
   );
 };

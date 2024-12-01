@@ -1,6 +1,6 @@
 import React from 'react';
 import { FaTwitter, FaLinkedin, FaGithub } from 'react-icons/fa';
-
+import './hero.css';
 interface HeroProps {
   title: string;
   subtitle: string;
