@@ -3,6 +3,9 @@ import ReactMarkdown from 'react-markdown';
 import TwoColumnSection from 'components/twoColumnSection/twoColumnSection';
 import './resume.css';
 
+interface ResumeProps {
+  backgroundColor?: string;
+}
 
 const leftContent = `
 
@@ -87,10 +90,11 @@ const rightContent = `
 - Designed and implemented full-stack solutions using **Angular** and **Node.js**, improving application functionality and responsiveness.  
 `;
 
-const Resume: React.FC = () => {
+const Resume: React.FC<ResumeProps> = ({backgroundColor}) => {
   return (
-    <>
-      <div className="mx-auto max-w-4xl px-4 resume" >
+    <div className='w-full pt-8 pb-8 bg-dots-pattern' style={{ backgroundColor: backgroundColor || 'gray' }}>
+      <div className="mx-auto max-w-4xl px-4 resume">
+
         <TwoColumnSection
           title={
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -114,7 +118,7 @@ const Resume: React.FC = () => {
           bgColor='#f9f9f9'
         />
       </div>
-    </>
+    </div>
   );
 };
 

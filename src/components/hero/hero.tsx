@@ -14,7 +14,7 @@ interface HeroProps {
 
 const Hero: React.FC<HeroProps> = ({ title, subtitle, image, video, backgroundColor, twitterLink, linkedinLink, githubLink }) => {
   return (
-    <div className="relative w-full h-screen" style={{ backgroundColor: backgroundColor || 'gray' }}>
+    <div className="relative w-full h-screen bg-dots-pattern" style={{ backgroundColor: backgroundColor || 'gray' }}>
       {image ? (
         <img src={image} alt="Hero" className="absolute inset-0 w-full h-full object-cover" />
       ) : video ? (
@@ -23,8 +23,7 @@ const Hero: React.FC<HeroProps> = ({ title, subtitle, image, video, backgroundCo
           Your browser does not support the video tag.
         </video>
       ) : null}
-      <div className="absolute inset-0 bg-dots-pattern"></div>
-      <div className="relative z-10 flex flex-col items-center justify-center h-full text-white bg-black bg-opacity-50">
+      <div className="relative z-10 flex flex-col items-center justify-center h-full text-white">
         <h1 className="text-5xl font-bold mb-4 red-color">{title}</h1>
         <p className="text-xl mb-8">{subtitle}</p>
         <div className="flex space-x-4">
