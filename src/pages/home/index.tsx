@@ -10,7 +10,7 @@ const Home: React.FC = () => {
     buttonLink: "#services",
     //image: "https://via.placeholder.com/1920x1080.png?text=Hero+Image",
     //video: "https://www.w3schools.com/html/mov_bbb.mp4",
-    backgroundColor: "#4a90e2",
+    backgroundColor: "#140453",
     twitterLink: 'https://twitter.com/palau_alegria',
     linkedinLink: 'https://www.linkedin.com/in/jmpa/',
     githubLink: 'https://github.com/PalGria',
@@ -20,7 +20,7 @@ const Home: React.FC = () => {
     <>
       <Hero {...heroData} />
       <About />      
-      <Resume />      
+      <Resume backgroundColor='#140453' />      
     </>
   );
 };
