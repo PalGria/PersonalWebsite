@@ -1,6 +1,7 @@
 import React from 'react';
 import Hero from '../../components/hero/hero';
 import About from './components/about/about';
+import Resume from './components/resume/resume';
 const Home: React.FC = () => {
   const heroData = {
     title: "Hi, I'm Jose",
@@ -19,6 +20,7 @@ const Home: React.FC = () => {
     <>
       <Hero {...heroData} />
       <About />      
+      <Resume />      
     </>
   );
 };

@@ -9,18 +9,14 @@ import liberbank from 'assets/liberbank.png'
 import mifinity from 'assets/mifinity.png'
 import newe from 'assets/newe.png'
 const responsive = {
-  superLargeDesktop: {
-    // the naming can be any, depends on you.
-    breakpoint: { max: 4000, min: 3000 },
-    items: 5
-  },
+
   desktop: {
     breakpoint: { max: 3000, min: 1024 },
-    items: 3
+    items: 4
   },
   tablet: {
     breakpoint: { max: 1024, min: 464 },
-    items: 2
+    items: 3
   },
   mobile: {
     breakpoint: { max: 464, min: 0 },
@@ -40,7 +36,16 @@ const BrandsCarousel: React.FC = () => {
 
   return (
     <div className="brands-carousel">
-      <Carousel responsive={responsive} infinite={true} autoPlay={true} autoPlaySpeed={3000} arrows={false}>
+      <Carousel
+      responsive={responsive}
+      infinite={true}
+      autoPlay={true}
+      autoPlaySpeed={2000}
+      arrows={false}
+      swipeable={true}
+      customTransition='transform 600ms ease'
+      >
+      
         {brands.map((brand, index) => (
           <div key={index} className="brand-item">
             <img src={brand.image} alt={brand.name} />
