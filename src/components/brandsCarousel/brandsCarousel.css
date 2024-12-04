@@ -1,0 +1,20 @@
+.brands-carousel {
+  width: 99vw;
+  margin-left: calc(-50vw + 50%);
+}
+
+.brand-item {
+  text-align: center;
+  padding: 50px;
+}
+
+.brand-item img {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.brand-item p {
+  font-size: 16px;
+  color: #333;
+}
