@@ -2,7 +2,8 @@ import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import TwoColumnSection from 'components/twoColumnSection/twoColumnSection';
 import './resume.css';
-
+const apiKey = import.meta.env.VITE_API_KEY;
+console.log(apiKey);
 interface ResumeProps {
   backgroundColor?: string;
 }
