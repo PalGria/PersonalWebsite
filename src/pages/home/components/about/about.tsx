@@ -16,7 +16,10 @@ export interface AboutData {
   brands: BrandItem[];
   techStack: TechStackItem[];
 }
-const About: React.FC = () => {
+interface AboutProps {
+  aboutData: AboutData;
+}
+const About: React.FC <AboutProps>= ({ aboutData }) => {
   return (
     <>
       <div className="mx-auto max-w-4xl px-4">
@@ -26,7 +29,8 @@ const About: React.FC = () => {
             <>
               <div>
                 <h2 className="text-3xl font-bold mb-6">About me</h2>
-                <p className='text-justify'>Hi, I'm Jose Manuel Palau Alegría, a passionate Lead Frontend Developer with a strong background in multimedia engineering. With expertise in React, Angular, and modern web technologies, I specialize in crafting dynamic, user-centric web experiences. My journey spans multiple industries, showcasing my ability to adapt, innovate, and lead technological transformations.
+                <p className='text-justify'>
+                  {aboutData.aboutMe}
                 </p>
               </div>
               <div className='mt-12'>
