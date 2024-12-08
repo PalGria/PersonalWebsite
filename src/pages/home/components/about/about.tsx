@@ -36,7 +36,7 @@ const About: React.FC <AboutProps>= ({ aboutData }) => {
               </div>
               <div className='mt-12'>
                 <h2 className="text-3xl font-bold mb-8">Where My Work Has Made a Difference</h2>
-                <BrandsCarousel />
+                <BrandsCarousel brands={aboutData.brands} />
               </div>
             </>
           }

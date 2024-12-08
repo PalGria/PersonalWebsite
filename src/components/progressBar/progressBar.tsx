@@ -8,8 +8,6 @@ interface ProgressBarProps {
 }
 
 const ProgressBar: React.FC<ProgressBarProps> = ({ skills }) => {
-  console.log(skills);
-
   
   return (
     <div className="container">
