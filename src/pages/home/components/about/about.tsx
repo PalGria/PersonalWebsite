@@ -3,6 +3,7 @@ import SingleColumnSection from 'components/singleColumnSection/singleColumnSect
 import ProgressBar from 'components/progressBar/progressBar';
 import BrandsCarousel from 'components/brandsCarousel/brandsCarousel';
 import './about.css';
+import { BrandItem, TechStackItem } from 'types/contentful';
 
 const skills = [
   { title: 'HTML', percentage: 50, className: 'html' },
@@ -10,7 +11,11 @@ const skills = [
   { title: 'JavaScript', percentage: 50, className: 'javascript' },
   { title: 'NodeJS', percentage: 30, className: 'nodejs' },
 ];
-
+export interface AboutData {
+  aboutMe: string;
+  brands: BrandItem[];
+  techStack: TechStackItem[];
+}
 const About: React.FC = () => {
   return (
     <>
