@@ -5,21 +5,18 @@ import BrandsCarousel from 'components/brandsCarousel/brandsCarousel';
 import './about.css';
 import { BrandItem, TechStackItem } from 'types/contentful';
 
-const skills = [
-  { title: 'HTML', percentage: 50, className: 'html' },
-  { title: 'CSS', percentage: 70, className: 'css' },
-  { title: 'JavaScript', percentage: 50, className: 'javascript' },
-  { title: 'NodeJS', percentage: 30, className: 'nodejs' },
-];
 export interface AboutData {
   aboutMe: string;
   brands: BrandItem[];
   techStack: TechStackItem[];
 }
 interface AboutProps {
-  aboutData: AboutData;
+  aboutData: AboutData | null;
 }
 const About: React.FC <AboutProps>= ({ aboutData }) => {
+  if (!aboutData) {
+    return null;
+  }
   return (
     <>
       <div className="mx-auto max-w-4xl px-4">
@@ -35,7 +32,7 @@ const About: React.FC <AboutProps>= ({ aboutData }) => {
               </div>
               <div className='mt-12'>
                 <h2 className="text-3xl font-bold mb-6">Tech Stack</h2>
-                <ProgressBar skills={skills} />
+                <ProgressBar skills={aboutData.techStack} />
               </div>
               <div className='mt-12'>
                 <h2 className="text-3xl font-bold mb-8">Where My Work Has Made a Difference</h2>
