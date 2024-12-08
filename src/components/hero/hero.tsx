@@ -2,8 +2,8 @@ import React from 'react';
 import { FaTwitter, FaLinkedin, FaGithub } from 'react-icons/fa';
 import './hero.css';
 interface HeroProps {
-  title: string;
-  subtitle: string;
+  title?: string;
+  subtitle?: string;
   image?: string;
   video?: string;
   backgroundColor?: string;
@@ -11,8 +11,16 @@ interface HeroProps {
   linkedinLink?: string;
   githubLink?: string;
 }
-
+export interface HeroData {
+  title: string;
+  subtitle: string;
+  backgroundColor: string;
+  twitterLink: string;
+  linkedinLink: string;
+  githubLink: string;
+}
 const Hero: React.FC<HeroProps> = ({ title, subtitle, image, video, backgroundColor, twitterLink, linkedinLink, githubLink }) => {
+
   return (
     <div className="relative w-full h-screen bg-dots-pattern" style={{ backgroundColor: backgroundColor || 'gray' }}>
       {image ? (

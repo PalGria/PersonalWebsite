@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import Hero from '../../components/hero/hero';
-import About from './components/about/about';
+import Hero, { HeroData } from '../../components/hero/hero';
+import About, { AboutData } from './components/about/about';
 import Resume from './components/resume/resume';
 import { createClient } from 'contentful';
+import { WebEntry } from 'types/contentful';
+import { WebEntryFields } from 'types/contentful';
 
 const Home: React.FC = () => {
-  
+
   const spaceId = import.meta.env.VITE_CONTENTFUL_SPACE_ID;
   const accessToken = import.meta.env.VITE_CONTENTFUL_ACCESS_TOKEN;
 
@@ -13,35 +15,40 @@ const Home: React.FC = () => {
     space: spaceId,
     accessToken: accessToken,
   });
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<WebEntryFields | null>(null);
+  const [heroData, setHeroData] = useState<HeroData | null>(null);
+  const [aboutData, setAboutData] = useState<AboutData | null>(null);
 
   useEffect(() => {
-    client.getEntry("60c5ZyxrvbRsBjpPwJ8kRQ")
+    client.getEntry<WebEntry>("60c5ZyxrvbRsBjpPwJ8kRQ")
       .then((response) => {
-        setData(response);
-        console.log(response);
+        setData(response.fields as WebEntryFields);
       })
       .catch(console.error);
   }, []);
-  
-  const heroData = {
-    title: "Hi, I'm Jose",
-    subtitle: "Multimedia Engineer and Web Developer",
-    buttonText: "Learn More",
-    buttonLink: "#services",
-    //image: "https://via.placeholder.com/1920x1080.png?text=Hero+Image",
-    //video: "https://www.w3schools.com/html/mov_bbb.mp4",
-    backgroundColor: "#140453",
-    twitterLink: 'https://twitter.com/palau_alegria',
-    linkedinLink: 'https://www.linkedin.com/in/jmpa/',
-    githubLink: 'https://github.com/PalGria',
-  };
 
+  useEffect(() => {
+    if (data) {
+      setHeroData({
+        title: data.title,
+        subtitle: data.subtitle,
+        backgroundColor: data.heroBackgroundColor,
+        twitterLink: data.twitter,
+        linkedinLink: data.linkedIn,
+        githubLink: data.github,
+      });
+      setAboutData({
+        aboutMe: data.aboutMe,
+        brands: data.brands,
+        techStack: data.techStack,
+      });
+    }
+  }, [data]);
   return (
     <>
       <Hero {...heroData} />
-      <About />      
-      <Resume backgroundColor='#140453' />      
+      <About aboutData={aboutData}/>
+      <Resume backgroundColor='#140453' />
     </>
   );
 };
