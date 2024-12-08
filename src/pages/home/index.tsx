@@ -47,7 +47,7 @@ const Home: React.FC = () => {
   return (
     <>
       <Hero {...heroData} />
-      <About />
+      <About aboutData={aboutData}/>
       <Resume backgroundColor='#140453' />
     </>
   );
