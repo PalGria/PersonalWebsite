@@ -48,7 +48,7 @@ const Home: React.FC = () => {
     <>
       <Hero {...heroData} />
       <About aboutData={aboutData}/>
-      <Resume backgroundColor='#140453' />
+      <Resume backgroundColor='#140453' leftColumn={data?.resumeLeftColumn} rightColumn={data?.resumeRightColumn}/>
     </>
   );
 };
