@@ -21,7 +21,8 @@ const Resume: React.FC<ResumeProps> = ({backgroundColor, leftColumn, rightColumn
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <h1>My Resume</h1>
               {
-                /*
+                /*ç
+                
                 <button
                 onClick={() => window.open('/path/to/resume.pdf', '_blank')}
                 className="download-button"
