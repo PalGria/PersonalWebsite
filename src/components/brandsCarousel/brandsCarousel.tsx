@@ -23,7 +23,6 @@ interface BrandProps {
 }
 
 const BrandsCarousel: React.FC<BrandProps> = ({brands}) => {
-console.log(brands)
   if (!brands) {
     return null;
   }
