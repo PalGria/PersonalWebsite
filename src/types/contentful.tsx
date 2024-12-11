@@ -84,3 +84,30 @@ export interface WebEntryFields {
     linkedIn : string;
     github : string;
 }
+
+export interface BlogPost extends EntrySkeletonType {
+  metadata: ContentfulMetadata;
+  sys: ContentfulSys;
+  fields: BlogPostFields;
+}
+
+export interface BlogPostFields {
+  title: string;
+  slug: string;
+  date: string;
+  content: string;
+  excerpt: string;
+  image: {
+    sys: {
+      type: string;
+      linkType: string;
+      id: string;
+    };
+  };
+}
+
+export interface BlogPostCall extends EntrySkeletonType{
+  metadata: ContentfulMetadata;
+  sys: ContentfulSys;
+  iotems: BlogPost[];
+}
