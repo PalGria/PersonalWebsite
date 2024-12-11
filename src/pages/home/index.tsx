@@ -5,6 +5,7 @@ import Resume from './components/resume/resume';
 import { createClient } from 'contentful';
 import { WebEntry } from 'types/contentful';
 import { WebEntryFields } from 'types/contentful';
+import Blog from './components/blog/blog';
 
 const Home: React.FC = () => {
 
@@ -49,6 +50,7 @@ const Home: React.FC = () => {
       <Hero {...heroData} />
       <About aboutData={aboutData}/>
       <Resume backgroundColor='#140453' leftColumn={data?.resumeLeftColumn} rightColumn={data?.resumeRightColumn}/>
+      <Blog />
     </>
   );
 };
