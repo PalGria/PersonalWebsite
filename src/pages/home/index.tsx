@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import Hero, { HeroData } from '../../components/hero/hero';
 import About, { AboutData } from './components/about/about';
 import Resume from './components/resume/resume';
-import { BlogPostFields, WebEntryFields } from 'types/contentful';
-import Blog from './components/blog/blog';
-import { getBlogPosts, getEntry } from 'services/contentfulService';
+import {  WebEntryFields } from 'types/contentful';
+import Blog from '../../components/blog/blog';
+import {  getEntry } from 'services/contentfulService';
 
 const Home: React.FC = () => {
 
@@ -12,20 +12,14 @@ const Home: React.FC = () => {
   const [data, setData] = useState<WebEntryFields | null>(null);
   const [heroData, setHeroData] = useState<HeroData | null>(null);
   const [aboutData, setAboutData] = useState<AboutData | null>(null);
-  const [blogData, setBlogData] = useState<BlogPostFields[] | null>(null);
   useEffect(() => {
     const fetchData = async () => {
       const entryData = await getEntry("60c5ZyxrvbRsBjpPwJ8kRQ");
       setData(entryData);
     };
-    const fetchBlogData = async () => {
-      const blogData = await getBlogPosts();
-      console.log(blogData);
-      setBlogData(blogData);
-    };
+
 
     fetchData();
-    fetchBlogData();
   }, []);
 
 
@@ -51,7 +45,8 @@ const Home: React.FC = () => {
       <Hero {...heroData} />
       <About aboutData={aboutData}/>
       <Resume backgroundColor='#140453' leftColumn={data?.resumeLeftColumn} rightColumn={data?.resumeRightColumn}/>
-      <Blog blogData={blogData}/>
+      <Blog />
+
     </>
   );
 };
