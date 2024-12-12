@@ -49,21 +49,21 @@ export interface BrandItem {
   fields: {
     title: string;
     description: string;
-    file: {
-      url: string;
-      details: {
-        size: number;
-        image: {
-          width: number;
-          height: number;
-        };
-      };
-      fileName: string;
-      contentType: string;
-    };
+    file: ImageFile;
   };
 }
-
+export interface ImageFile {
+  url: string;
+  details: {
+    size: number;
+    image: {
+      width: number;
+      height: number;
+    };
+  };
+  fileName: string;
+  contentType: string;
+}
 export interface WebEntry extends EntrySkeletonType {
   metadata: ContentfulMetadata;
   sys: ContentfulSys;
@@ -97,17 +97,22 @@ export interface BlogPostFields {
   date: string;
   content: string;
   excerpt: string;
-  image: {
-    sys: {
-      type: string;
-      linkType: string;
-      id: string;
-    };
-  };
+  image: Image;
 }
 
 export interface BlogPostCall extends EntrySkeletonType{
   metadata: ContentfulMetadata;
   sys: ContentfulSys;
   iotems: BlogPost[];
+}
+export interface ImageFields {
+  title: string;
+  description: string;
+  file: ImageFile;
+}
+
+export interface Image {
+  metadata: ContentfulMetadata;
+  sys: ContentfulSys;
+  fields: ImageFields;
 }
