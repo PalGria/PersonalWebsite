@@ -1,11 +1,19 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { getBlogPosts } from 'services/contentfulService';
 import { BlogPostFields } from 'types/contentful';
 
-interface BlogProps {
-  blogData?: BlogPostFields[] | null;
-}
 
-const Blog: React.FC<BlogProps> = ({ blogData }) => {
+const Blog: React.FC = ( ) => {
+  const [blogData, setBlogData] = useState<BlogPostFields[] | null>(null);
+  const fetchBlogData = async () => {
+    const blogData = await getBlogPosts();
+    setBlogData(blogData);
+  };
+  
+  useEffect(() => {
+    fetchBlogData();
+  }, []);
+  
   if (!blogData) {
     return null;
   }
@@ -14,7 +22,8 @@ const Blog: React.FC<BlogProps> = ({ blogData }) => {
       <h1 className="text-4xl font-bold mb-8 text-center">Latest entries from my Blog</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {blogData.map(post => (
-          <div key={post.slug} className="bg-white shadow-md rounded-lg overflow-hidden">
+          <a href={`/blog/${post.slug}`} key={post.slug}>
+          <div className="bg-white shadow-md rounded-lg overflow-hidden">
             <img src={post.image.fields.file.url} alt={post.image.fields.title} className="w-full h-48 object-cover" />
             <div className="p-3">
               <h2 className="text-2xl font-semibold mb-2">{post.title}</h2>
@@ -23,6 +32,7 @@ const Blog: React.FC<BlogProps> = ({ blogData }) => {
               </p>
             </div>
           </div>
+          </a>
         ))}
       </div>
     </div>
