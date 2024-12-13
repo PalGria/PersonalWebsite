@@ -1,3 +1,4 @@
+import Footer from 'components/footer/footer';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -17,7 +18,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         &larr; Back
       </button>
       <main>{children}</main>
-
+      <Footer />
     </div>
   );
 };
