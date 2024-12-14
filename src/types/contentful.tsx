@@ -103,7 +103,7 @@ export interface BlogPostFields {
 export interface BlogPostCall extends EntrySkeletonType{
   metadata: ContentfulMetadata;
   sys: ContentfulSys;
-  iotems: BlogPost[];
+  items: BlogPost[];
 }
 export interface ImageFields {
   title: string;

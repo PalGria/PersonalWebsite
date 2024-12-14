@@ -24,7 +24,8 @@ export const getEntry = async (entryId: string): Promise<WebEntryFields | null> 
 export const getBlogPosts = async (): Promise<BlogPostFields[] | null> => {
   try {
     const response = await client.getEntries<BlogPostCall>({ content_type: 'blogPost' });
-    return response.items.map(item => item.fields);
+    const blogPosts = response.items.map(item => item.fields) as unknown as BlogPostFields[];
+    return blogPosts;
   } catch (error) {
     console.error(error);
     return null;
@@ -34,7 +35,8 @@ export const getBlogPosts = async (): Promise<BlogPostFields[] | null> => {
 export const getBlogPostBySlug = async (slug: string): Promise<BlogPostFields | null> => {
   try {
     const response = await client.getEntries<BlogPostCall>({ content_type: 'blogPost', 'fields.slug': slug });
-    return response?.items[0]?.fields;
+    const blogPost = response.items[0]?.fields as unknown as BlogPostFields;
+    return blogPost;
   } catch (error) {
     console.error(error);
     return null;
