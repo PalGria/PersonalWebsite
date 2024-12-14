@@ -1,28 +1,48 @@
-import js from '@eslint/js'
-import globals from 'globals'
-import reactHooks from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
-import tseslint from 'typescript-eslint'
+/* eslint-disable import/no-unresolved */
+import globals from "globals";
+import pluginJs from "@eslint/js";
+import tsPlugin from "@typescript-eslint/eslint-plugin";
+import tsParser from "@typescript-eslint/parser";
+import pluginReact from "eslint-plugin-react";
+import importPlugin from "eslint-plugin-import";
 
-export default tseslint.config(
-  { ignores: ['dist'] },
+/** @type {import('eslint').Linter.Config[]} */
+export default [
   {
-    extends: [js.configs.recommended, ...tseslint.configs.recommended],
-    files: ['**/*.{ts,tsx}'],
+    files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"],
+    ignores: ["dist/**"],
     languageOptions: {
-      ecmaVersion: 2020,
       globals: globals.browser,
+      parser: tsParser,
     },
     plugins: {
-      'react-hooks': reactHooks,
-      'react-refresh': reactRefresh,
+      'import': importPlugin,
+      'react': pluginReact,
+      '@typescript-eslint': tsPlugin,
+    },
+    settings: {
+      'import/resolver': {
+        node: {
+          extensions: ['.js', '.jsx', '.ts', '.tsx'],
+          paths: ['src'],
+        },
+        typescript: {
+          alwaysTryTypes: true,
+          project: './tsconfig.json',
+        },
+      },
     },
     rules: {
-      ...reactHooks.configs.recommended.rules,
-      'react-refresh/only-export-components': [
-        'warn',
-        { allowConstantExport: true },
+      // Manually include rules from the recommended configurations
+      ...pluginJs.configs.recommended.rules,
+      ...tsPlugin.configs.recommended.rules,
+      ...pluginReact.configs.recommended.rules,
+      'react/react-in-jsx-scope': 'off',
+      'import/no-unresolved': [
+        'error',
+        { caseSensitiveStrict: true },
       ],
+      // You need to manually specify the rules that are part of the recommended configs
     },
   },
-)
+];
