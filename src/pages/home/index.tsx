@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Hero, { HeroData } from '../../components/hero/hero';
+import Hero, { HeroData } from 'components/hero/hero';
 import About, { AboutData } from './components/about/about';
 import Resume from './components/resume/resume';
 import {  WebEntryFields } from 'types/contentful';
