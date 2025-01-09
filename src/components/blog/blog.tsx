@@ -23,14 +23,15 @@ const Blog: React.FC = ( ) => {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {blogData.map(post => (
           <a href={`/blog/${post.slug}`} key={post.slug}>
-          <div className="bg-white shadow-md rounded-lg overflow-ellipsis h-80" >
+          <div className="bg-white shadow-md rounded-lg overflow-ellipsis" >
           <img 
               src={post.image ? post.image.fields.file.url : 'https://via.placeholder.com/300'} 
               alt={post.image ? post.image.fields.title : 'Placeholder Image'} 
               className="w-full h-48 object-cover" 
-            />            <div className="p-3">
-              <h2 className="text-xl font-semibold mb-2">{post.title}</h2>
-              <p className="text-gray-700">
+            />
+            <div className="p-3">
+              <h2 className="text-md font-semibold mb-4 h-10">{post.title}</h2>
+              <p className="text-gray-700 h-20">
                 {post.excerpt.length > 50 ? `${post.excerpt.substring(0, 80)}...` : post.excerpt}
               </p>
             </div>
