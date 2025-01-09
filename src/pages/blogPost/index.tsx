@@ -7,6 +7,7 @@ import { BlogPostFields } from 'types/contentful';
 import { getBlogPostBySlug } from 'services/contentfulService';
 import Blog from 'components/blog/blog';
 import Layout from 'components/layout/layout';
+import ReactMarkdown from 'react-markdown';
 interface BlogPostProps {
   backgroundColor?: string;
   leftColumn?: string;
@@ -55,7 +56,7 @@ const BlogPost: React.FC<BlogPostProps> = () => {
               <h1 className="text-4xl font-bold">{post.title}</h1>
               <p className="text-gray-500 mb-4 font-serif text-xs">{formattedDate}</p>
               <img src={post.image.fields.file.url} alt={post.image.fields.title} className="w-full h-48 object-cover mb-4" />
-              <p className="text-gray-700">{post.content}</p>
+              <div className="text-gray-700"><ReactMarkdown>{post.content}</ReactMarkdown></div>
             </div>
           }
         />
