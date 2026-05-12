@@ -1,22 +1,40 @@
-import Layout from 'components/layout/layout';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { FiArrowLeft } from 'react-icons/fi';
 
 const NotFound: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <Layout>
-      <div className="flex flex-col items-center justify-center h-screen space-y-4">
-        <h1 className="text-4xl font-bold text-white">404 - Page Not Found</h1>
+    <div
+      className="min-h-screen bg-dots-pattern flex items-center justify-center"
+      style={{ backgroundColor: '#140453' }}
+    >
+      <motion.div
+        className="text-center px-6"
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: 'easeOut' }}
+      >
+        <p className="text-indigo-400 font-mono text-sm tracking-[0.35em] uppercase mb-6">
+          404
+        </p>
+        <h1 className="text-5xl md:text-6xl font-extrabold text-white mb-4 tracking-tight">
+          Page not found
+        </h1>
+        <p className="text-white/50 text-lg mb-10 max-w-sm mx-auto leading-relaxed">
+          This page doesn't exist or has been moved somewhere else.
+        </p>
         <button
           onClick={() => navigate('/')}
-          className="bg-white text-gray-800 p-3 rounded-full shadow-lg hover:shadow-xl transition-shadow duration-300"
+          className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full bg-white text-gray-900 font-semibold hover:bg-gray-100 active:scale-95 transition-all"
         >
-          &larr; Back
+          <FiArrowLeft size={18} />
+          Back home
         </button>
-      </div>
-    </Layout>
+      </motion.div>
+    </div>
   );
 };
 

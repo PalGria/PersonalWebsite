@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Recurse -Force)",
+      "Bash(Select-Object FullName, PSIsContainer)",
+      "Bash(Sort-Object FullName)",
+      "Bash(npm install *)",
+      "Bash(Remove-Item netifly.toml)",
+      "Bash(Write-Host \"deleted\")",
+      "Bash(npm run *)"
+    ]
+  }
+}
