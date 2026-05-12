@@ -1,50 +1,46 @@
-# React + TypeScript + Vite
+# Personal Portfolio — JM Palau Alegria
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Senior Frontend Developer portfolio. Built with React 18, TypeScript, Vite, Tailwind CSS, and Contentful headless CMS.
 
-Currently, two official plugins are available:
+## Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **React 18** + **TypeScript** (strict mode)
+- **Vite** + SWC for near-instant builds and HMR
+- **Tailwind CSS** with dark mode support
+- **Framer Motion** for scroll-triggered animations
+- **Contentful** headless CMS for all content
+- **react-helmet-async** for per-page SEO
+- Deployed on **Netlify**
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- Dark / light mode toggle (respects system preference, persists in localStorage)
+- Sticky navbar with smooth-scroll section navigation
+- Framer Motion entrance animations on all sections
+- SEO: OpenGraph, Twitter Cards, JSON-LD Person structured data
+- Lazy-loaded routes for optimal Lighthouse score
+- CV download button linking to `/public/cv.pdf`
+- Projects showcase, blog, and contact sections
 
-- Configure the top-level `parserOptions` property like this:
+## Getting Started
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```bash
+npm install
+npm run dev
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## Environment Variables
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+Create a `.env` file in the root:
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
 ```
+VITE_CONTENTFUL_SPACE_ID=your_space_id
+VITE_CONTENTFUL_ACCESS_TOKEN=your_access_token
+```
+
+## Customisation
+
+- **Projects**: edit `src/data/projects.ts`
+- **Contact email**: edit the `EMAIL` constant in `src/components/contact/Contact.tsx`
+- **CV**: drop your PDF as `public/cv.pdf`
+- **Content** (bio, resume, skills, blog): managed in Contentful
