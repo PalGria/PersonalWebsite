@@ -52,7 +52,7 @@ interface SkillTagsProps {
 const SkillTags: React.FC<SkillTagsProps> = ({ skills }) => {
   return (
     <div className="flex flex-wrap gap-3">
-      {skills.map((skill, index) => {
+      {(skills ?? []).map((skill, index) => {
         const Icon = iconMap[skill.fields.name.toLowerCase()] ?? FaCode;
         return (
           <div
