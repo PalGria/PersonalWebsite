@@ -83,6 +83,7 @@ export interface WebEntryFields {
     twitter : string;
     linkedIn : string;
     github : string;
+    mail : string;
 }
 
 export interface BlogPost extends EntrySkeletonType {
@@ -115,4 +116,19 @@ export interface Image {
   metadata: ContentfulMetadata;
   sys: ContentfulSys;
   fields: ImageFields;
+}
+
+export interface ProjectFields {
+  projectTitle: string;
+  projectDescriptionShort: string;
+  projectDescriptionLong: string;
+  technologies: string[];
+  liveLink: string;
+  githubLink: string;
+}
+
+export interface ProjectCall extends EntrySkeletonType {
+  metadata: ContentfulMetadata;
+  sys: ContentfulSys;
+  items: ProjectFields[];
 }
