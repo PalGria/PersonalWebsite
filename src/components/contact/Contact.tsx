@@ -3,14 +3,14 @@ import { FiMail, FiCopy, FiCheck } from 'react-icons/fi';
 import { FaLinkedin, FaGithub } from 'react-icons/fa';
 import { motion, useInView } from 'framer-motion';
 
-const EMAIL = 'your@email.com'; // Replace with your email address
-
 interface ContactProps {
+  email?: string;
   linkedIn?: string;
   github?: string;
 }
 
-const Contact: React.FC<ContactProps> = ({ linkedIn, github }) => {
+const Contact: React.FC<ContactProps> = ({ email = '', linkedIn, github }) => {
+  const EMAIL = email;
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-60px' });
   const [copied, setCopied] = useState(false);

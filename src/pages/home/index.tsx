@@ -80,7 +80,7 @@ const Home: React.FC = () => {
       />
       <Projects />
       <Blog />
-      <Contact linkedIn={data.linkedIn} github={data.github} />
+      <Contact email={data.mail} linkedIn={data.linkedIn} github={data.github} />
       <Footer />
     </>
   );

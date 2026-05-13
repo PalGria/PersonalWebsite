@@ -1,65 +1,34 @@
-import React, { useRef } from 'react';
-import { FiExternalLink, FiGithub } from 'react-icons/fi';
-import { motion, useInView } from 'framer-motion';
-import { projects, Project } from 'data/projects';
+import React, { useRef, useEffect, useState } from 'react';
+import { FiExternalLink, FiGithub, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
+import { getProjects } from 'services/contentfulService';
+import { ProjectFields } from 'types/contentful';
 
-const ProjectCard: React.FC<{ project: Project; index: number }> = ({ project, index }) => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-50px' });
-
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 30 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.5, delay: index * 0.1, ease: 'easeOut' }}
-      className="flex flex-col bg-white dark:bg-gray-800/60 rounded-2xl p-7 shadow-sm border border-gray-100 dark:border-gray-700/50 hover:shadow-md hover:-translate-y-1 transition-all duration-200"
-    >
-      <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-3">{project.title}</h3>
-      <p className="text-gray-500 dark:text-gray-400 text-sm flex-1 mb-5 leading-relaxed">
-        {project.description}
-      </p>
-      <div className="flex flex-wrap gap-1.5 mb-6">
-        {project.tech.map(t => (
-          <span
-            key={t}
-            className="text-xs px-2.5 py-1 rounded-full bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 font-medium"
-          >
-            {t}
-          </span>
-        ))}
-      </div>
-      <div className="flex gap-5 border-t border-gray-100 dark:border-gray-700/50 pt-4">
-        {project.liveUrl && (
-          <a
-            href={project.liveUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1.5 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
-          >
-            <FiExternalLink size={14} />
-            Live
-          </a>
-        )}
-        {project.githubUrl && (
-          <a
-            href={project.githubUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1.5 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
-          >
-            <FiGithub size={14} />
-            GitHub
-          </a>
-        )}
-      </div>
-    </motion.div>
-  );
+const slideVariants = {
+  enter: (dir: number) => ({ x: dir > 0 ? 80 : -80, opacity: 0 }),
+  center: { x: 0, opacity: 1 },
+  exit: (dir: number) => ({ x: dir > 0 ? -80 : 80, opacity: 0 }),
 };
 
 const Projects: React.FC = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-60px' });
+  const [projects, setProjects] = useState<ProjectFields[]>([]);
+  const [current, setCurrent] = useState(0);
+  const [direction, setDirection] = useState(1);
+
+  useEffect(() => {
+    getProjects().then(data => {
+      if (data) setProjects(data);
+    });
+  }, []);
+
+  const go = (delta: number) => {
+    setDirection(delta);
+    setCurrent(i => (i + delta + projects.length) % projects.length);
+  };
+
+  const project = projects[current];
 
   return (
     <section id="projects" className="py-20 bg-white dark:bg-gray-950">
@@ -76,11 +45,118 @@ const Projects: React.FC = () => {
           </p>
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Selected Work</h2>
         </motion.div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects.map((project, index) => (
-            <ProjectCard key={index} project={project} index={index} />
-          ))}
-        </div>
+
+        {projects.length === 0 ? (
+          <div className="h-80 flex items-center justify-center text-gray-400 dark:text-gray-600">
+            Loading…
+          </div>
+        ) : (
+          <div className="relative">
+            {/* Cards */}
+            <div className="overflow-hidden rounded-3xl">
+              <AnimatePresence mode="wait" custom={direction}>
+                <motion.div
+                  key={current}
+                  custom={direction}
+                  variants={slideVariants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{ duration: 0.35, ease: 'easeInOut' }}
+                  className="bg-white dark:bg-gray-800/60 border border-gray-100 dark:border-gray-700/50 rounded-3xl p-10 md:p-14 shadow-sm"
+                >
+                  {/* Number badge */}
+                  <span className="inline-block text-xs font-mono text-indigo-400 dark:text-indigo-500 tracking-widest uppercase mb-6">
+                    {String(current + 1).padStart(2, '0')} / {String(projects.length).padStart(2, '0')}
+                  </span>
+
+                  <h3 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-5">
+                    {project.projectTitle}
+                  </h3>
+
+                  <p className="text-gray-500 dark:text-gray-400 text-base md:text-lg leading-relaxed mb-8 max-w-2xl">
+                    {project.projectDescriptionLong}
+                  </p>
+
+                  {/* Tech tags */}
+                  <div className="flex flex-wrap gap-2 mb-10">
+                    {project.technologies?.map(t => (
+                      <span
+                        key={t}
+                        className="text-sm px-3 py-1.5 rounded-full bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 font-medium"
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* Links */}
+                  <div className="flex gap-6 border-t border-gray-100 dark:border-gray-700/50 pt-6">
+                    {project.liveLink && (
+                      <a
+                        href={project.liveLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 text-sm font-semibold text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+                      >
+                        <FiExternalLink size={16} />
+                        Live demo
+                      </a>
+                    )}
+                    {project.githubLink && (
+                      <a
+                        href={project.githubLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 text-sm font-semibold text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+                      >
+                        <FiGithub size={16} />
+                        GitHub
+                      </a>
+                    )}
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+
+            {/* Nav row */}
+            <div className="flex items-center justify-between mt-8">
+              {/* Dots */}
+              <div className="flex gap-2">
+                {projects.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => { setDirection(i > current ? 1 : -1); setCurrent(i); }}
+                    className={`rounded-full transition-all duration-200 ${
+                      i === current
+                        ? 'w-6 h-2.5 bg-indigo-500'
+                        : 'w-2.5 h-2.5 bg-gray-200 dark:bg-gray-700 hover:bg-indigo-300 dark:hover:bg-indigo-700'
+                    }`}
+                    aria-label={`Go to project ${i + 1}`}
+                  />
+                ))}
+              </div>
+
+              {/* Arrows */}
+              <div className="flex gap-3">
+                <button
+                  onClick={() => go(-1)}
+                  className="w-11 h-11 flex items-center justify-center rounded-full border border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:border-indigo-400 hover:text-indigo-600 dark:hover:border-indigo-500 dark:hover:text-indigo-400 transition-all duration-200"
+                  aria-label="Previous project"
+                >
+                  <FiChevronLeft size={20} />
+                </button>
+                <button
+                  onClick={() => go(1)}
+                  className="w-11 h-11 flex items-center justify-center rounded-full border border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:border-indigo-400 hover:text-indigo-600 dark:hover:border-indigo-500 dark:hover:text-indigo-400 transition-all duration-200"
+                  aria-label="Next project"
+                >
+                  <FiChevronRight size={20} />
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );
