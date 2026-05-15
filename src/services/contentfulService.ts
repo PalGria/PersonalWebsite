@@ -1,6 +1,6 @@
 // contentfulService.ts
 import { createClient } from 'contentful';
-import { BlogPostCall, BlogPostFields, WebEntry, ProjectCall, ProjectFields } from 'types/contentful';
+import { BlogPostCall, BlogPostFields, WebEntry, ProjectFields } from 'types/contentful';
 import { WebEntryFields } from 'types/contentful';
 
 const spaceId = import.meta.env.VITE_CONTENTFUL_SPACE_ID;
