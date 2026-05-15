@@ -110,7 +110,7 @@ const Navbar: React.FC = () => {
           })}
           <a
             href="/cv.pdf"
-            download
+            download="Jose_MP_Alegria_Resume.pdf"
             className={`flex items-center gap-1.5 text-sm font-medium px-3 py-1.5 rounded-full border transition-opacity hover:opacity-70 ${
               scrolled
                 ? 'border-gray-400 dark:border-gray-500 text-gray-800 dark:text-gray-100'
@@ -169,7 +169,7 @@ const Navbar: React.FC = () => {
               ))}
               <a
                 href="/cv.pdf"
-                download
+                download="Jose_MP_Alegria_Resume.pdf"
                 className="flex items-center gap-2 text-gray-800 dark:text-gray-100 font-medium hover:opacity-60"
               >
                 <FiDownload size={15} />
