@@ -27,3 +27,8 @@ dist-ssr
 # Claude Code local files
 .claude/
 .vite-react-ssg-temp
+
+# Deploy output on the VPS
+live
+live-old
+dist-old
