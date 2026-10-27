@@ -9,9 +9,11 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+        sans: ['Inter Variable', 'Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
       },
       colors: {
+        // Overridable at runtime via the --brand CSS variable (set from Contentful on the home page)
+        brand: 'var(--brand, #140453)',
         gray: {
           950: '#12131e',
           900: '#1a1b2a',

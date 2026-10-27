@@ -1,19 +1,6 @@
-import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
-import { HelmetProvider } from 'react-helmet-async';
+import { ViteReactSSG } from 'vite-react-ssg';
+import '@fontsource-variable/inter';
 import './index.css';
-import App from './App.tsx';
-import { ThemeProvider } from 'context/ThemeContext';
-import ErrorBoundary from 'components/errorBoundary/ErrorBoundary';
+import { routes } from './routes';
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <HelmetProvider>
-      <ThemeProvider>
-        <ErrorBoundary>
-          <App />
-        </ErrorBoundary>
-      </ThemeProvider>
-    </HelmetProvider>
-  </StrictMode>,
-);
+export const createRoot = ViteReactSSG({ routes });

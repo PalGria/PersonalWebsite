@@ -1,34 +1,62 @@
+/* Core layout rules from react-multi-carousel/lib/styles.css. The full stylesheet
+   is not imported because it also ships an icon font for arrows/dots we don't use. */
+.react-multi-carousel-list {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.react-multi-carousel-track {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  will-change: transform, transition;
+}
+
+.react-multi-carousel-item {
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
 .brands-carousel {
-  width: 99vw;
-  margin-left: calc(-50vw + 50%);
+  width: 100%;
 }
 
 .brand-item {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 32px 48px;
+  padding: 12px;
 }
 
+/* Logos sit on a light tile in both themes: several assets have dark artwork
+   or an opaque background baked in, so they can't go straight onto a dark page. */
 .brand-item img {
-  max-width: 280px;
-  height: 120px;
+  width: 100%;
+  max-width: 240px;
+  height: 96px;
   object-fit: contain;
-  opacity: 0.6;
-  transition: opacity 0.35s ease, filter 0.35s ease;
+  box-sizing: border-box;
+  padding: 16px 20px;
+  border-radius: 16px;
+  background-color: #f4f4f6;
+  border: 1px solid #e5e7eb;
+  opacity: 0.85;
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .brand-item:hover img {
   opacity: 1;
+  transform: translateY(-2px);
 }
 
-/* Dark mode: soften blacks to gray so dark logos stay visible */
 .dark .brand-item img {
-  filter: contrast(0.65) brightness(1.1);
-  opacity: 0.75;
-}
-
-.dark .brand-item:hover img {
-  filter: contrast(0.65) brightness(1.1);
-  opacity: 1;
+  background-color: #e8e8ee;
+  border-color: transparent;
 }

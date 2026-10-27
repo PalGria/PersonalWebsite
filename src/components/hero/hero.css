@@ -22,3 +22,10 @@
   animation: sparkle 3.5s ease-in-out infinite;
   z-index: 1;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .sparkle-dot {
+    animation: none;
+    opacity: 0.3;
+  }
+}

@@ -8,7 +8,7 @@ import {
 } from 'react-icons/si';
 import { FaCode } from 'react-icons/fa';
 import type { IconType } from 'react-icons';
-import { TechStackItem } from 'types/contentful';
+import { Skill } from 'types/content';
 
 const iconMap: Record<string, IconType> = {
   react: SiReact,
@@ -46,21 +46,21 @@ const iconMap: Record<string, IconType> = {
 };
 
 interface SkillTagsProps {
-  skills: TechStackItem[];
+  skills: Skill[];
 }
 
 const SkillTags: React.FC<SkillTagsProps> = ({ skills }) => {
   return (
     <div className="flex flex-wrap gap-3">
-      {(skills ?? []).map((skill, index) => {
-        const Icon = iconMap[skill.fields.name.toLowerCase()] ?? FaCode;
+      {skills.map(skill => {
+        const Icon = iconMap[skill.name.toLowerCase()] ?? FaCode;
         return (
           <div
-            key={index}
+            key={skill.name}
             className="flex items-center gap-2 px-4 py-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 text-sm font-medium transition-colors hover:bg-gray-200 dark:hover:bg-gray-700 select-none"
           >
             <Icon size={15} />
-            {skill.fields.name}
+            {skill.name}
           </div>
         );
       })}

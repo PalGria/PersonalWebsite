@@ -1,49 +1,38 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { useLoaderData } from 'react-router-dom';
 import Hero from 'components/hero/hero';
-import About from './components/about/about';
-import Resume from './components/resume/resume';
-import Blog from '../../components/blog/blog';
+import Blog from 'components/blog/blog';
 import Projects from 'components/projects/Projects';
 import Contact from 'components/contact/Contact';
-import Navbar from 'components/navbar/Navbar';
-import Footer from 'components/footer/footer';
-import { WebEntryFields } from 'types/contentful';
-import { getEntry } from 'services/contentfulService';
+import Seo from 'components/seo/Seo';
+import About from './components/about/about';
+import Resume from './components/resume/resume';
+import { BlogPostSummary, HomeContent, Project } from 'types/content';
+import { HOME_ENTRY_ID, SITE_NAME, SITE_TITLE, SITE_URL } from 'config/site';
 
-const LoadingSkeleton: React.FC = () => (
-  <div className="min-h-screen">
-    <div className="w-full h-screen bg-dots-pattern flex flex-col items-center justify-center gap-4" style={{ backgroundColor: '#140453' }}>
-      <div className="h-12 w-72 animate-pulse bg-white/20 rounded-lg" />
-      <div className="h-6 w-56 animate-pulse bg-white/20 rounded-lg" />
-      <div className="flex gap-4 mt-2">
-        {[0, 1, 2].map(i => (
-          <div key={i} className="h-8 w-8 animate-pulse bg-white/20 rounded-full" />
-        ))}
-      </div>
-    </div>
-    <div className="mx-auto max-w-4xl px-4 py-16">
-      <div className="h-8 w-32 animate-pulse bg-gray-200 dark:bg-gray-700 rounded mb-6" />
-      <div className="space-y-3">
-        {[1, 0.9, 0.7].map((w, i) => (
-          <div key={i} className="h-4 animate-pulse bg-gray-200 dark:bg-gray-700 rounded" style={{ width: `${w * 100}%` }} />
-        ))}
-      </div>
-    </div>
-  </div>
-);
+interface HomeData {
+  content: HomeContent;
+  projects: Project[];
+  posts: BlogPostSummary[];
+}
 
-const Home: React.FC = () => {
-  const [data, setData] = useState<WebEntryFields | null>(null);
-  const [loading, setLoading] = useState(true);
+// Runs at build time only; the result is embedded in the prerendered page.
+// A failed fetch throws so the build fails instead of deploying a broken site.
+export async function loader(): Promise<HomeData | null> {
+  if (import.meta.env.SSR) {
+    const { getHomeContent, getProjects, getBlogPosts } = await import('services/contentfulService');
+    const [content, projects, posts] = await Promise.all([
+      getHomeContent(HOME_ENTRY_ID),
+      getProjects(),
+      getBlogPosts(),
+    ]);
+    return { content, projects, posts };
+  }
+  return null;
+}
 
-  useEffect(() => {
-    getEntry('60c5ZyxrvbRsBjpPwJ8kRQ').then(entry => {
-      setData(entry);
-      setLoading(false);
-    });
-  }, []);
-
-  if (loading) return <LoadingSkeleton />;
+export const Component: React.FC = () => {
+  const data = useLoaderData() as HomeData | null;
 
   if (!data) {
     return (
@@ -55,35 +44,36 @@ const Home: React.FC = () => {
     );
   }
 
+  const { content, projects, posts } = data;
+  const sameAs = [content.linkedIn, content.github, content.twitter].filter(Boolean);
+  const personSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: SITE_NAME,
+    jobTitle: 'Senior Frontend Developer',
+    ...(SITE_URL && { url: SITE_URL }),
+    ...(sameAs.length > 0 && { sameAs }),
+    knowsAbout: content.techStack.map(skill => skill.name),
+  };
+
   return (
-    <>
-      <Navbar />
+    // --brand lets the CMS override the brand colour used by `bg-brand`
+    <div style={content.heroBackgroundColor ? ({ '--brand': content.heroBackgroundColor } as React.CSSProperties) : undefined}>
+      <Seo title={SITE_TITLE} path="/">
+        <script type="application/ld+json">{JSON.stringify(personSchema)}</script>
+      </Seo>
       <Hero
-        title={data.title}
-        subtitle={data.subtitle}
-        backgroundColor={data.heroBackgroundColor}
-        twitterLink={data.twitter}
-        linkedinLink={data.linkedIn}
-        githubLink={data.github}
+        title={content.title}
+        subtitle={content.subtitle}
+        twitterLink={content.twitter}
+        linkedinLink={content.linkedIn}
+        githubLink={content.github}
       />
-      <About
-        aboutData={{
-          aboutMe: data.aboutMe,
-          brands: data.brands,
-          techStack: data.techStack,
-        }}
-      />
-      <Resume
-        backgroundColor="#140453"
-        leftColumn={data.resumeLeftColumn}
-        rightColumn={data.resumeRightColumn}
-      />
-      <Projects />
-      <Blog />
-      <Contact email={data.mail} linkedIn={data.linkedIn} github={data.github} />
-      <Footer />
-    </>
+      <About aboutMe={content.aboutMe} brands={content.brands} techStack={content.techStack} />
+      <Resume leftColumn={content.resumeLeftColumn} rightColumn={content.resumeRightColumn} />
+      <Projects projects={projects} />
+      <Blog posts={posts} />
+      <Contact email={content.mail} linkedIn={content.linkedIn} github={content.github} />
+    </div>
   );
 };
-
-export default Home;

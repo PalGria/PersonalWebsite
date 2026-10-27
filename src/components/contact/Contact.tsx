@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FiMail, FiCopy, FiCheck } from 'react-icons/fi';
 import { FaLinkedin, FaGithub } from 'react-icons/fa';
 import { motion, useInView } from 'framer-motion';
@@ -9,21 +9,30 @@ interface ContactProps {
   github?: string;
 }
 
-const Contact: React.FC<ContactProps> = ({ email = '', linkedIn, github }) => {
-  const EMAIL = email;
+const Contact: React.FC<ContactProps> = ({ email, linkedIn, github }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-60px' });
   const [copied, setCopied] = useState(false);
 
-  const copyEmail = () => {
-    navigator.clipboard.writeText(EMAIL).then(() => {
+  useEffect(() => {
+    if (!copied) return;
+    const timeout = setTimeout(() => setCopied(false), 2000);
+    return () => clearTimeout(timeout);
+  }, [copied]);
+
+  const copyEmail = async () => {
+    if (!email) return;
+    try {
+      await navigator.clipboard.writeText(email);
       setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    });
+    } catch {
+      // Clipboard API unavailable or denied — fall back to the mail client.
+      window.location.href = `mailto:${email}`;
+    }
   };
 
   return (
-    <section id="contact" className="py-24 bg-gray-50 dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800">
+    <section id="contact" className="py-24 bg-gray-50 dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800 scroll-mt-16">
       <div className="mx-auto max-w-4xl px-4 text-center">
         <motion.div
           ref={ref}
@@ -41,27 +50,31 @@ const Contact: React.FC<ContactProps> = ({ email = '', linkedIn, github }) => {
             Open to new opportunities. Whether you have a role, a project, or just want to connect — my inbox is open.
           </p>
 
-          <a
-            href={`mailto:${EMAIL}`}
-            className="inline-flex items-center gap-2.5 px-8 py-4 rounded-full bg-indigo-600 text-white font-semibold hover:bg-indigo-700 active:scale-95 transition-all shadow-sm text-base mb-12"
-          >
-            <FiMail size={18} />
-            Say Hello
-          </a>
+          {email && (
+            <a
+              href={`mailto:${email}`}
+              className="inline-flex items-center gap-2.5 px-8 py-4 rounded-full bg-indigo-600 text-white font-semibold hover:bg-indigo-700 active:scale-95 transition-all shadow-sm text-base mb-12"
+            >
+              <FiMail size={18} />
+              Say Hello
+            </a>
+          )}
 
           <div className="flex justify-center items-center gap-8 text-gray-400 dark:text-gray-500 flex-wrap">
-            <button
-              onClick={copyEmail}
-              className="flex items-center gap-1.5 hover:text-gray-700 dark:hover:text-gray-200 transition-colors text-sm group"
-              aria-label="Copy email address"
-            >
-              <span className="transition-transform group-hover:scale-110">
-                {copied ? <FiCheck size={15} className="text-green-500" /> : <FiCopy size={15} />}
-              </span>
-              <span className={copied ? 'text-green-500 dark:text-green-400' : ''}>
-                {copied ? 'Copied!' : EMAIL}
-              </span>
-            </button>
+            {email && (
+              <button
+                onClick={copyEmail}
+                className="flex items-center gap-1.5 hover:text-gray-700 dark:hover:text-gray-200 transition-colors text-sm group"
+                aria-label="Copy email address"
+              >
+                <span className="transition-transform group-hover:scale-110">
+                  {copied ? <FiCheck size={15} className="text-green-500" /> : <FiCopy size={15} />}
+                </span>
+                <span className={copied ? 'text-green-500 dark:text-green-400' : ''} aria-live="polite">
+                  {copied ? 'Copied!' : email}
+                </span>
+              </button>
+            )}
 
             {linkedIn && (
               <a

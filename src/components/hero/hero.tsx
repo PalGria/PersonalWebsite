@@ -2,27 +2,14 @@ import React from 'react';
 import { FaTwitter, FaLinkedin, FaGithub } from 'react-icons/fa';
 import { FiChevronDown } from 'react-icons/fi';
 import { motion } from 'framer-motion';
-import { useTheme } from 'context/ThemeContext';
 import './hero.css';
 
 interface HeroProps {
-  title?: string;
-  subtitle?: string;
-  image?: string;
-  video?: string;
-  backgroundColor?: string;
+  title: string;
+  subtitle: string;
   twitterLink?: string;
   linkedinLink?: string;
   githubLink?: string;
-}
-
-export interface HeroData {
-  title: string;
-  subtitle: string;
-  backgroundColor: string;
-  twitterLink: string;
-  linkedinLink: string;
-  githubLink: string;
 }
 
 const sparkleDots = [
@@ -51,26 +38,14 @@ const itemVariants = {
   visible: { opacity: 1, y: 0 },
 };
 
-const Hero: React.FC<HeroProps> = ({
-  title, subtitle, image, video, backgroundColor,
-  twitterLink, linkedinLink, githubLink,
-}) => {
-  const { theme } = useTheme();
-  const isDark = theme === 'dark';
-  const bg = isDark ? (backgroundColor || '#140453') : '#f5f3ff';
-  const textPrimary   = isDark ? 'text-white'      : 'text-indigo-950';
-  const textSecondary = isDark ? 'text-white/70'   : 'text-indigo-900/60';
-  const textMuted     = isDark ? 'text-white/35'   : 'text-indigo-900/30';
-  const iconColor     = isDark ? 'text-white/60 hover:text-blue-400'  : 'text-indigo-800/50 hover:text-indigo-600';
-  const iconColorGh   = isDark ? 'text-white/60 hover:text-gray-300'  : 'text-indigo-800/50 hover:text-indigo-900';
-  const badgeBorder   = isDark ? 'border-white/15 bg-white/5'         : 'border-indigo-300/40 bg-indigo-100/60';
-  const badgeText     = isDark ? 'text-white/75'                      : 'text-indigo-800/80';
+// Colours use `dark:` variants (not the JS theme) so the prerendered markup is
+// correct for both themes before hydration.
+const iconClass = 'text-indigo-800/50 hover:text-indigo-600 dark:text-white/60 dark:hover:text-blue-400 transition-colors hover:scale-110 transform duration-200';
+const iconClassGh = 'text-indigo-800/50 hover:text-indigo-900 dark:text-white/60 dark:hover:text-gray-300 transition-colors hover:scale-110 transform duration-200';
 
+const Hero: React.FC<HeroProps> = ({ title, subtitle, twitterLink, linkedinLink, githubLink }) => {
   return (
-    <div
-      className="relative w-full h-screen bg-dots-pattern overflow-hidden transition-colors duration-500"
-      style={{ backgroundColor: bg }}
-    >
+    <div className="relative w-full min-h-svh bg-dots-pattern overflow-hidden transition-colors duration-500 bg-violet-50 dark:bg-brand">
       {/* Ambient glow blobs */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
         <div
@@ -98,39 +73,31 @@ const Hero: React.FC<HeroProps> = ({
         <div
           key={i}
           className="sparkle-dot"
+          aria-hidden="true"
           style={{ top: dot.top, left: dot.left, animationDuration: dot.duration, animationDelay: dot.delay }}
         />
       ))}
 
-      {/* Background image / video */}
-      {image ? (
-        <img src={image} alt="Hero" className="absolute inset-0 w-full h-full object-cover" />
-      ) : video ? (
-        <video className="absolute inset-0 w-full h-full object-cover" autoPlay loop muted>
-          <source src={video} type="video/mp4" />
-        </video>
-      ) : null}
-
       {/* Content */}
       <motion.div
-        className="relative z-10 flex flex-col items-center justify-center h-full text-white px-6"
+        className="relative z-10 flex flex-col items-center justify-center min-h-svh px-6"
         initial="hidden"
         animate="visible"
         variants={{ visible: { transition: { staggerChildren: 0.15 } } }}
       >
         {/* Availability badge */}
         <motion.div
-          className={`flex items-center gap-2.5 px-5 py-2 rounded-full border ${badgeBorder} backdrop-blur-sm mb-8`}
+          className="flex items-center gap-2.5 px-5 py-2 rounded-full border border-indigo-300/40 bg-indigo-100/60 dark:border-white/15 dark:bg-white/5 backdrop-blur-sm mb-8"
           variants={itemVariants}
           transition={{ duration: 0.6, ease: 'easeOut' }}
         >
           <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse flex-shrink-0" />
-          <span className={`${badgeText} text-sm font-light tracking-wider`}>Available for new roles</span>
+          <span className="text-indigo-800/80 dark:text-white/75 text-sm font-light tracking-wider">Available for new roles</span>
         </motion.div>
 
         {/* Name */}
         <motion.h1
-          className={`text-5xl md:text-7xl font-extrabold mb-2 text-center tracking-tight ${textPrimary}`}
+          className="text-5xl md:text-7xl font-extrabold mb-2 text-center tracking-tight text-indigo-950 dark:text-white"
           variants={itemVariants}
           transition={{ duration: 0.7, ease: 'easeOut' }}
         >
@@ -148,7 +115,7 @@ const Hero: React.FC<HeroProps> = ({
 
         {/* Subtitle */}
         <motion.p
-          className={`text-lg md:text-xl ${textSecondary} mb-10 text-center font-light tracking-wide max-w-lg`}
+          className="text-lg md:text-xl text-indigo-900/60 dark:text-white/70 mb-10 text-center font-light tracking-wide max-w-lg"
           variants={itemVariants}
           transition={{ duration: 0.6, ease: 'easeOut' }}
         >
@@ -162,20 +129,17 @@ const Hero: React.FC<HeroProps> = ({
           transition={{ duration: 0.6, ease: 'easeOut' }}
         >
           {twitterLink && (
-            <a href={twitterLink} target="_blank" rel="noopener noreferrer" aria-label="Twitter"
-              className={`${iconColor} transition-colors hover:scale-110 transform duration-200`}>
+            <a href={twitterLink} target="_blank" rel="noopener noreferrer" aria-label="Twitter" className={iconClass}>
               <FaTwitter size={26} />
             </a>
           )}
           {linkedinLink && (
-            <a href={linkedinLink} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"
-              className={`${iconColor} transition-colors hover:scale-110 transform duration-200`}>
+            <a href={linkedinLink} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className={iconClass}>
               <FaLinkedin size={26} />
             </a>
           )}
           {githubLink && (
-            <a href={githubLink} target="_blank" rel="noopener noreferrer" aria-label="GitHub"
-              className={`${iconColorGh} transition-colors hover:scale-110 transform duration-200`}>
+            <a href={githubLink} target="_blank" rel="noopener noreferrer" aria-label="GitHub" className={iconClassGh}>
               <FaGithub size={26} />
             </a>
           )}
@@ -184,7 +148,7 @@ const Hero: React.FC<HeroProps> = ({
 
       {/* Scroll indicator */}
       <motion.button
-        className={`absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 ${textMuted} hover:opacity-60 transition-colors z-10`}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-indigo-900/30 dark:text-white/35 hover:opacity-60 transition-colors z-10"
         animate={{ y: [0, 7, 0] }}
         transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
         onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}

@@ -3,6 +3,7 @@ import { FiSun, FiMoon, FiMenu, FiX, FiDownload } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useTheme } from 'context/ThemeContext';
+import { CV_FILENAME, CV_PATH } from 'config/site';
 
 const navLinks = [
   { label: 'About',    id: 'about'    },
@@ -12,24 +13,47 @@ const navLinks = [
   { label: 'Contact',  id: 'contact'  },
 ];
 
+// Both icons are rendered and toggled with `dark:` so the prerendered HTML
+// matches whatever theme the visitor ends up with.
+const ThemeIcon: React.FC<{ size: number }> = ({ size }) => (
+  <>
+    <FiMoon size={size} className="dark:hidden" />
+    <FiSun size={size} className="hidden dark:block" />
+  </>
+);
+
 const Navbar: React.FC = () => {
-  const { theme, toggleTheme } = useTheme();
+  const { toggleTheme } = useTheme();
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const [scrolled, setScrolled]       = useState(false);
   const [menuOpen, setMenuOpen]       = useState(false);
   const [activeSection, setActiveSection] = useState('');
 
+  const isHome = pathname === '/';
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
+    onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKeyDown = (e: KeyboardEvent) => { if (e.key === 'Escape') setMenuOpen(false); };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [menuOpen]);
+
   // Scroll spy — watches sections only on the home page
   useEffect(() => {
     setActiveSection('');
-    if (pathname !== '/') return;
+    if (!isHome) return;
 
     const observers: IntersectionObserver[] = [];
 
@@ -45,10 +69,10 @@ const Navbar: React.FC = () => {
     });
 
     return () => observers.forEach(o => o.disconnect());
-  }, [pathname]);
+  }, [isHome]);
 
   const handleLogoClick = () => {
-    if (pathname === '/') {
+    if (isHome) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
       setActiveSection('');
     } else {
@@ -57,17 +81,35 @@ const Navbar: React.FC = () => {
   };
 
   const scrollTo = (id: string) => {
-    if (pathname !== '/') {
-      navigate('/');
-      // brief delay so sections mount before scrolling
-      setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }), 120);
-    } else {
+    if (isHome) {
       document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      // ScrollRestoration scrolls to the hash target once the home page renders
+      navigate({ pathname: '/', hash: id });
     }
     setMenuOpen(false);
   };
 
-  const textClass = scrolled ? 'text-gray-800 dark:text-gray-100' : 'text-white';
+  // The home hero is light in light mode; every other page starts on a dark background.
+  const overLightHero = isHome && !scrolled;
+  const textClass = scrolled
+    ? 'text-gray-800 dark:text-gray-100'
+    : overLightHero
+      ? 'text-indigo-950 dark:text-white'
+      : 'text-white';
+  const activeClass = scrolled || overLightHero
+    ? 'text-indigo-600 dark:text-indigo-400'
+    : 'text-white';
+  const cvClass = scrolled
+    ? 'border-gray-400 dark:border-gray-500 text-gray-800 dark:text-gray-100'
+    : overLightHero
+      ? 'border-indigo-950/40 text-indigo-950 dark:border-white/70 dark:text-white'
+      : 'border-white/70 text-white';
+  const themeButtonClass = scrolled
+    ? 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+    : overLightHero
+      ? 'text-indigo-950 hover:bg-indigo-950/10 dark:text-white dark:hover:bg-white/20'
+      : 'text-white hover:bg-white/20';
 
   return (
     <nav
@@ -80,6 +122,7 @@ const Navbar: React.FC = () => {
       <div className="max-w-4xl mx-auto px-4 flex items-center justify-between h-16">
         <button
           onClick={handleLogoClick}
+          aria-label="Home"
           className={`font-bold text-lg tracking-widest transition-opacity hover:opacity-70 ${textClass}`}
         >
           JMPA
@@ -93,12 +136,9 @@ const Navbar: React.FC = () => {
               <button
                 key={link.id}
                 onClick={() => scrollTo(link.id)}
+                aria-current={isActive ? 'location' : undefined}
                 className={`relative text-sm font-medium transition-all ${
-                  isActive
-                    ? scrolled
-                      ? 'text-indigo-600 dark:text-indigo-400'
-                      : 'text-white'
-                    : `hover:opacity-60 ${textClass}`
+                  isActive ? activeClass : `hover:opacity-60 ${textClass}`
                 }`}
               >
                 {link.label}
@@ -109,13 +149,9 @@ const Navbar: React.FC = () => {
             );
           })}
           <a
-            href="/cv.pdf"
-            download="Jose_MP_Alegria_Resume.pdf"
-            className={`flex items-center gap-1.5 text-sm font-medium px-3 py-1.5 rounded-full border transition-opacity hover:opacity-70 ${
-              scrolled
-                ? 'border-gray-400 dark:border-gray-500 text-gray-800 dark:text-gray-100'
-                : 'border-white/70 text-white'
-            }`}
+            href={CV_PATH}
+            download={CV_FILENAME}
+            className={`flex items-center gap-1.5 text-sm font-medium px-3 py-1.5 rounded-full border transition-opacity hover:opacity-70 ${cvClass}`}
           >
             <FiDownload size={13} />
             CV
@@ -123,13 +159,9 @@ const Navbar: React.FC = () => {
           <button
             onClick={toggleTheme}
             aria-label="Toggle theme"
-            className={`p-1.5 rounded-full transition-colors ${
-              scrolled
-                ? 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
-                : 'text-white hover:bg-white/20'
-            }`}
+            className={`p-1.5 rounded-full transition-colors ${themeButtonClass}`}
           >
-            {theme === 'dark' ? <FiSun size={17} /> : <FiMoon size={17} />}
+            <ThemeIcon size={17} />
           </button>
         </div>
 
@@ -137,7 +169,9 @@ const Navbar: React.FC = () => {
         <button
           onClick={() => setMenuOpen(o => !o)}
           aria-label="Toggle menu"
-          className={`md:hidden p-1.5 rounded transition-colors ${textClass}`}
+          aria-expanded={menuOpen}
+          aria-controls="mobile-menu"
+          className={`md:hidden p-1.5 rounded transition-colors ${menuOpen ? 'text-gray-800 dark:text-gray-100' : textClass}`}
         >
           {menuOpen ? <FiX size={22} /> : <FiMenu size={22} />}
         </button>
@@ -147,6 +181,7 @@ const Navbar: React.FC = () => {
       <AnimatePresence>
         {menuOpen && (
           <motion.div
+            id="mobile-menu"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
@@ -168,8 +203,8 @@ const Navbar: React.FC = () => {
                 </button>
               ))}
               <a
-                href="/cv.pdf"
-                download="Jose_MP_Alegria_Resume.pdf"
+                href={CV_PATH}
+                download={CV_FILENAME}
                 className="flex items-center gap-2 text-gray-800 dark:text-gray-100 font-medium hover:opacity-60"
               >
                 <FiDownload size={15} />
@@ -179,8 +214,9 @@ const Navbar: React.FC = () => {
                 onClick={toggleTheme}
                 className="flex items-center gap-2 text-gray-800 dark:text-gray-100 font-medium hover:opacity-60"
               >
-                {theme === 'dark' ? <FiSun size={16} /> : <FiMoon size={16} />}
-                {theme === 'dark' ? 'Light mode' : 'Dark mode'}
+                <ThemeIcon size={16} />
+                <span className="dark:hidden">Dark mode</span>
+                <span className="hidden dark:inline">Light mode</span>
               </button>
             </div>
           </motion.div>

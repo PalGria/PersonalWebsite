@@ -1,24 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { getBlogPosts } from 'services/contentfulService';
-import { BlogPostFields } from 'types/contentful';
+import React, { useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { motion, useInView } from 'framer-motion';
+import { BlogPostSummary } from 'types/content';
 
-const getImageUrl = (url: string) => (url.startsWith('//') ? `https:${url}` : url);
-
-const BlogCardSkeleton: React.FC = () => (
-  <div className="bg-white dark:bg-gray-800/60 rounded-2xl overflow-hidden border border-gray-100 dark:border-gray-700/50">
-    <div className="w-full h-48 animate-pulse bg-gray-200 dark:bg-gray-700" />
-    <div className="p-5 space-y-2.5">
-      <div className="h-4 animate-pulse bg-gray-200 dark:bg-gray-700 rounded w-4/5" />
-      <div className="h-4 animate-pulse bg-gray-200 dark:bg-gray-700 rounded w-3/5" />
-      <div className="h-3 animate-pulse bg-gray-200 dark:bg-gray-700 rounded w-full mt-4" />
-      <div className="h-3 animate-pulse bg-gray-200 dark:bg-gray-700 rounded w-5/6" />
-    </div>
-  </div>
-);
+const MotionLink = motion.create(Link);
 
 interface BlogCardProps {
-  post: BlogPostFields;
+  post: BlogPostSummary;
   index: number;
 }
 
@@ -27,19 +15,27 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, index }) => {
   const isInView = useInView(ref, { once: true, margin: '-50px' });
 
   return (
-    <motion.a
+    <MotionLink
       ref={ref}
-      href={`/blog/${post.slug}`}
+      to={`/blog/${post.slug}`}
       initial={{ opacity: 0, y: 30 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.5, delay: index * 0.1, ease: 'easeOut' }}
       className="block bg-white dark:bg-gray-800/60 rounded-2xl overflow-hidden border border-gray-100 dark:border-gray-700/50 hover:shadow-md hover:-translate-y-1 transition-all duration-200"
     >
-      <img
-        src={post.image ? getImageUrl(post.image.fields.file.url) : '/placeholder-blog.png'}
-        alt={post.image ? post.image.fields.title : post.title}
-        className="w-full h-48 object-cover"
-      />
+      {post.image ? (
+        <img
+          src={post.image.url}
+          alt={post.image.title || post.title}
+          width={post.image.width}
+          height={post.image.height}
+          loading="lazy"
+          decoding="async"
+          className="w-full h-48 object-cover"
+        />
+      ) : (
+        <div className="w-full h-48 bg-gradient-to-br from-indigo-500 to-purple-600" aria-hidden="true" />
+      )}
       <div className="p-5">
         <h3 className="text-sm font-semibold mb-3 text-gray-900 dark:text-white line-clamp-2 leading-snug">
           {post.title}
@@ -48,25 +44,20 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, index }) => {
           {post.excerpt}
         </p>
       </div>
-    </motion.a>
+    </MotionLink>
   );
 };
 
-const Blog: React.FC = () => {
-  const [blogData, setBlogData] = useState<BlogPostFields[] | null>(null);
-  const [loading, setLoading] = useState(true);
+interface BlogProps {
+  posts: BlogPostSummary[];
+}
+
+const Blog: React.FC<BlogProps> = ({ posts }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-60px' });
 
-  useEffect(() => {
-    getBlogPosts().then(data => {
-      setBlogData(data);
-      setLoading(false);
-    });
-  }, []);
-
   return (
-    <section id="blog" className="bg-gray-50 dark:bg-gray-900 py-20 border-t border-gray-100 dark:border-gray-800">
+    <section id="blog" className="bg-gray-50 dark:bg-gray-900 py-20 border-t border-gray-100 dark:border-gray-800 scroll-mt-16">
       <div className="mx-auto max-w-4xl px-4">
         <motion.div
           ref={ref}
@@ -80,12 +71,15 @@ const Blog: React.FC = () => {
           </p>
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Latest Writing</h2>
         </motion.div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {loading
-            ? Array.from({ length: 3 }).map((_, i) => <BlogCardSkeleton key={i} />)
-            : blogData?.map((post, i) => <BlogCard key={post.slug} post={post} index={i} />)
-          }
-        </div>
+        {posts.length === 0 ? (
+          <p className="py-16 text-center text-gray-400 dark:text-gray-500">
+            No posts yet — check back soon.
+          </p>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {posts.map((post, i) => <BlogCard key={post.slug} post={post} index={i} />)}
+          </div>
+        )}
       </div>
     </section>
   );

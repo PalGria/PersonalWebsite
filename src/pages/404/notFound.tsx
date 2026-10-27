@@ -1,16 +1,14 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FiArrowLeft } from 'react-icons/fi';
+import Seo from 'components/seo/Seo';
+import { SITE_NAME } from 'config/site';
 
-const NotFound: React.FC = () => {
-  const navigate = useNavigate();
-
+export const Component: React.FC = () => {
   return (
-    <div
-      className="min-h-screen bg-dots-pattern flex items-center justify-center"
-      style={{ backgroundColor: '#140453' }}
-    >
+    <div className="min-h-screen bg-dots-pattern bg-brand flex items-center justify-center">
+      <Seo title={`Page not found | ${SITE_NAME}`} path="/404" noIndex />
       <motion.div
         className="text-center px-6"
         initial={{ opacity: 0, y: 24 }}
@@ -24,18 +22,16 @@ const NotFound: React.FC = () => {
           Page not found
         </h1>
         <p className="text-white/50 text-lg mb-10 max-w-sm mx-auto leading-relaxed">
-          This page doesn't exist or has been moved somewhere else.
+          This page doesn&apos;t exist or has been moved somewhere else.
         </p>
-        <button
-          onClick={() => navigate('/')}
+        <Link
+          to="/"
           className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full bg-white text-gray-900 font-semibold hover:bg-gray-100 active:scale-95 transition-all"
         >
           <FiArrowLeft size={18} />
           Back home
-        </button>
+        </Link>
       </motion.div>
     </div>
   );
 };
-
-export default NotFound;

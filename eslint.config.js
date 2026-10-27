@@ -1,48 +1,40 @@
-/* eslint-disable import/no-unresolved */
 import globals from "globals";
 import pluginJs from "@eslint/js";
 import tsPlugin from "@typescript-eslint/eslint-plugin";
 import tsParser from "@typescript-eslint/parser";
 import pluginReact from "eslint-plugin-react";
-import importPlugin from "eslint-plugin-import";
+import pluginReactHooks from "eslint-plugin-react-hooks";
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
   {
+    ignores: ["dist/**", ".vite-react-ssg-temp/**"],
+  },
+  {
     files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"],
-    ignores: ["dist/**"],
     languageOptions: {
       globals: globals.browser,
       parser: tsParser,
     },
     plugins: {
-      'import': importPlugin,
       'react': pluginReact,
+      'react-hooks': pluginReactHooks,
       '@typescript-eslint': tsPlugin,
     },
     settings: {
-      'import/resolver': {
-        node: {
-          extensions: ['.js', '.jsx', '.ts', '.tsx'],
-          paths: ['src'],
-        },
-        typescript: {
-          alwaysTryTypes: true,
-          project: './tsconfig.json',
-        },
-      },
+      react: { version: 'detect' },
     },
     rules: {
-      // Manually include rules from the recommended configurations
+      // Manually include rules from the recommended configurations.
+      // Unresolved imports are caught by `tsc -b`, which runs in the build.
       ...pluginJs.configs.recommended.rules,
       ...tsPlugin.configs.recommended.rules,
       ...pluginReact.configs.recommended.rules,
+      ...pluginReactHooks.configs.recommended.rules,
       'react/react-in-jsx-scope': 'off',
-      'import/no-unresolved': [
-        'error',
-        { caseSensitiveStrict: true },
-      ],
-      // You need to manually specify the rules that are part of the recommended configs
+      'react/prop-types': 'off',
+      // TypeScript already reports undefined identifiers (and knows about types/globals).
+      'no-undef': 'off',
     },
   },
 ];
