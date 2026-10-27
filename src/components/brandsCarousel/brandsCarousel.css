@@ -1,62 +1,97 @@
-/* Core layout rules from react-multi-carousel/lib/styles.css. The full stylesheet
-   is not imported because it also ships an icon font for arrows/dots we don't use. */
-.react-multi-carousel-list {
-  display: flex;
-  align-items: center;
+.brands-marquee {
   overflow: hidden;
-  position: relative;
+  /* Fade the logos out at both edges instead of cutting them off */
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
 }
 
-.react-multi-carousel-track {
-  list-style: none;
-  padding: 0;
+.brands-track {
+  display: flex;
+  width: max-content;
+  animation: brands-scroll calc(var(--brand-count, 4) * 3.5s) linear infinite;
+}
+
+.brands-marquee:hover .brands-track {
+  animation-play-state: paused;
+}
+
+.brands-list {
+  display: flex;
+  flex-shrink: 0;
   margin: 0;
-  display: flex;
-  flex-direction: row;
-  position: relative;
-  transform-style: preserve-3d;
-  backface-visibility: hidden;
-  will-change: transform, transition;
+  padding: 0;
+  list-style: none;
 }
 
-.react-multi-carousel-item {
-  transform-style: preserve-3d;
-  backface-visibility: hidden;
-}
-
-.brands-carousel {
-  width: 100%;
-}
-
+/* Each copy is followed by its own trailing gap, so -50% lands exactly on the second copy */
 .brand-item {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 12px;
+  flex-shrink: 0;
+  padding: 8px 12px;
 }
 
 /* Logos sit on a light tile in both themes: several assets have dark artwork
    or an opaque background baked in, so they can't go straight onto a dark page. */
 .brand-item img {
-  width: 100%;
-  max-width: 240px;
+  display: block;
+  width: 200px;
   height: 96px;
   object-fit: contain;
   box-sizing: border-box;
   padding: 16px 20px;
   border-radius: 16px;
-  background-color: #f4f4f6;
-  border: 1px solid #e5e7eb;
-  opacity: 0.85;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  background-color: #eef0f5;
+  border: 1px solid #d4d8e1;
+  box-shadow: 0 1px 2px rgb(15 23 42 / 0.06), 0 4px 12px rgb(15 23 42 / 0.05);
+  transition: transform 0.3s ease;
 }
 
 .brand-item:hover img {
-  opacity: 1;
   transform: translateY(-2px);
 }
 
 .dark .brand-item img {
   background-color: #e8e8ee;
   border-color: transparent;
+  box-shadow: none;
+}
+
+@media (max-width: 640px) {
+  .brand-item {
+    padding: 8px;
+  }
+
+  .brand-item img {
+    width: 160px;
+    height: 80px;
+    padding: 12px 16px;
+  }
+}
+
+@keyframes brands-scroll {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Without motion, show every logo as a static, centred grid */
+@media (prefers-reduced-motion: reduce) {
+  .brands-marquee {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .brands-track {
+    width: auto;
+    animation: none;
+  }
+
+  .brands-list {
+    flex-wrap: wrap;
+    justify-content: center;
+    flex-shrink: 1;
+  }
+
+  .brands-list[aria-hidden] {
+    display: none;
+  }
 }
