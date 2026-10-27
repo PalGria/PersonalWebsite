@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { FiArrowUp } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const ScrollToTop: React.FC = () => {
+const BackToTop: React.FC = () => {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setVisible(window.scrollY > 400);
+    onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
@@ -30,4 +31,4 @@ const ScrollToTop: React.FC = () => {
   );
 };
 
-export default ScrollToTop;
+export default BackToTop;

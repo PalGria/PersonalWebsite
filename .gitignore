@@ -12,7 +12,6 @@ dist
 dist-ssr
 *.local
 .env
-package-lock.json
 
 # Editor directories and files
 .vscode/*
@@ -24,3 +23,7 @@ package-lock.json
 *.njsproj
 *.sln
 *.sw?
+
+# Claude Code local files
+.claude/
+.vite-react-ssg-temp

@@ -1,10 +1,9 @@
 import React from 'react';
 import Carousel from 'react-multi-carousel';
-import 'react-multi-carousel/lib/styles.css';
 import './brandsCarousel.css';
-import { BrandItem } from 'types/contentful';
-const responsive = {
+import { Brand } from 'types/content';
 
+const responsive = {
   desktop: {
     breakpoint: { max: 3000, min: 1024 },
     items: 4
@@ -18,28 +17,30 @@ const responsive = {
     items: 1
   }
 };
+
 interface BrandProps {
-  brands: BrandItem[];
+  brands: Brand[];
 }
 
-const BrandsCarousel: React.FC<BrandProps> = ({brands}) => {
-  if (!brands) {
-    return null;
-  }
+const BrandsCarousel: React.FC<BrandProps> = ({ brands }) => {
+  if (brands.length === 0) return null;
+
   return (
     <div className="brands-carousel">
       <Carousel
         responsive={responsive}
-        infinite={true}
-        autoPlay={true}
+        ssr
+        deviceType="desktop"
+        infinite
+        autoPlay
         autoPlaySpeed={2000}
         arrows={false}
-        swipeable={true}
-        customTransition='transform 600ms ease'
+        swipeable
+        customTransition="transform 600ms ease"
       >
-        {brands.map((brand, index) => (
-          <div key={index} className="brand-item">
-            <img src={brand.fields.file.url} alt={brand.fields.title} />
+        {brands.map(brand => (
+          <div key={brand.logo.url} className="brand-item">
+            <img src={brand.logo.url} alt={brand.title} loading="lazy" decoding="async" />
           </div>
         ))}
       </Carousel>
