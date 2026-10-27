@@ -146,15 +146,16 @@ const Hero: React.FC<HeroProps> = ({ title, subtitle, twitterLink, linkedinLink,
         </motion.div>
       </motion.div>
 
-      {/* Scroll indicator */}
+      {/* Scroll indicator — centred with inset-x-0 + mx-auto because framer-motion's
+          inline transform for `y` would override a translate-x centring class */}
       <motion.button
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-indigo-900/30 dark:text-white/35 hover:opacity-60 transition-colors z-10"
+        className="absolute bottom-8 inset-x-0 mx-auto w-fit flex flex-col items-center gap-1.5 text-indigo-900/60 dark:text-white/50 hover:opacity-70 transition-colors z-10"
         animate={{ y: [0, 7, 0] }}
         transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
         onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
         aria-label="Scroll to content"
       >
-        <span className="text-[9px] tracking-[0.4em] uppercase font-light">scroll</span>
+        <span className="text-[9px] tracking-[0.4em] uppercase font-light -mr-[0.4em]">scroll</span>
         <FiChevronDown size={16} />
       </motion.button>
     </div>
