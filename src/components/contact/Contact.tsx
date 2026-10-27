@@ -32,7 +32,7 @@ const Contact: React.FC<ContactProps> = ({ email, linkedIn, github }) => {
   };
 
   return (
-    <section id="contact" className="py-24 bg-gray-50 dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800 scroll-mt-16">
+    <section id="contact" className="py-24 bg-slate-100 dark:bg-gray-900 border-t border-slate-200 dark:border-gray-800 scroll-mt-16">
       <div className="mx-auto max-w-4xl px-4 text-center">
         <motion.div
           ref={ref}
@@ -40,13 +40,13 @@ const Contact: React.FC<ContactProps> = ({ email, linkedIn, github }) => {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
         >
-          <p className="text-xs font-mono text-indigo-500 dark:text-indigo-400 tracking-[0.2em] uppercase mb-4">
+          <p className="text-xs font-mono text-indigo-600 dark:text-indigo-400 tracking-[0.2em] uppercase mb-4">
             05 — Contact
           </p>
           <h2 className="text-4xl font-bold mb-4 text-gray-900 dark:text-white">
             Get in touch
           </h2>
-          <p className="text-gray-500 dark:text-gray-400 mb-10 max-w-md mx-auto text-lg leading-relaxed">
+          <p className="text-gray-600 dark:text-gray-400 mb-10 max-w-md mx-auto text-lg leading-relaxed">
             Open to new opportunities. Whether you have a role, a project, or just want to connect — my inbox is open.
           </p>
 
@@ -60,7 +60,7 @@ const Contact: React.FC<ContactProps> = ({ email, linkedIn, github }) => {
             </a>
           )}
 
-          <div className="flex justify-center items-center gap-8 text-gray-400 dark:text-gray-500 flex-wrap">
+          <div className="flex justify-center items-center gap-8 text-gray-600 dark:text-gray-400 flex-wrap">
             {email && (
               <button
                 onClick={copyEmail}

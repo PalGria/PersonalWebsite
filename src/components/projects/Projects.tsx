@@ -36,14 +36,14 @@ const Projects: React.FC<ProjectsProps> = ({ projects }) => {
           transition={{ duration: 0.5 }}
           className="mb-12"
         >
-          <p className="text-xs font-mono text-indigo-500 dark:text-indigo-400 tracking-[0.2em] uppercase mb-2">
+          <p className="text-xs font-mono text-indigo-600 dark:text-indigo-400 tracking-[0.2em] uppercase mb-2">
             03 — Projects
           </p>
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Selected Work</h2>
         </motion.div>
 
         {!project ? (
-          <p className="py-16 text-center text-gray-400 dark:text-gray-500">
+          <p className="py-16 text-center text-gray-500 dark:text-gray-500">
             Projects coming soon.
           </p>
         ) : (
@@ -59,10 +59,10 @@ const Projects: React.FC<ProjectsProps> = ({ projects }) => {
                   animate="center"
                   exit="exit"
                   transition={{ duration: 0.35, ease: 'easeInOut' }}
-                  className="bg-white dark:bg-gray-800/60 border border-gray-100 dark:border-gray-700/50 rounded-3xl p-10 md:p-14 shadow-sm"
+                  className="bg-white dark:bg-gray-800/60 border border-gray-200 dark:border-gray-700/50 rounded-3xl p-10 md:p-14 shadow-sm"
                 >
                   {/* Number badge */}
-                  <span className="inline-block text-xs font-mono text-indigo-400 dark:text-indigo-500 tracking-widest uppercase mb-6">
+                  <span className="inline-block text-xs font-mono text-indigo-600 dark:text-indigo-400 tracking-widest uppercase mb-6">
                     {String(current + 1).padStart(2, '0')} / {String(projects.length).padStart(2, '0')}
                   </span>
 
@@ -70,7 +70,7 @@ const Projects: React.FC<ProjectsProps> = ({ projects }) => {
                     {project.projectTitle}
                   </h3>
 
-                  <p className="text-gray-500 dark:text-gray-400 text-base md:text-lg leading-relaxed mb-8 max-w-2xl">
+                  <p className="text-gray-600 dark:text-gray-400 text-base md:text-lg leading-relaxed mb-8 max-w-2xl">
                     {project.projectDescriptionLong}
                   </p>
 
@@ -87,13 +87,13 @@ const Projects: React.FC<ProjectsProps> = ({ projects }) => {
                   </div>
 
                   {/* Links */}
-                  <div className="flex gap-6 border-t border-gray-100 dark:border-gray-700/50 pt-6">
+                  <div className="flex gap-6 border-t border-gray-200 dark:border-gray-700/50 pt-6">
                     {project.liveLink && (
                       <a
                         href={project.liveLink}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-2 text-sm font-semibold text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+                        className="flex items-center gap-2 text-sm font-semibold text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
                       >
                         <FiExternalLink size={16} />
                         Live demo
@@ -104,7 +104,7 @@ const Projects: React.FC<ProjectsProps> = ({ projects }) => {
                         href={project.githubLink}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-2 text-sm font-semibold text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+                        className="flex items-center gap-2 text-sm font-semibold text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
                       >
                         <FiGithub size={16} />
                         GitHub
@@ -139,14 +139,14 @@ const Projects: React.FC<ProjectsProps> = ({ projects }) => {
                 <div className="flex gap-3">
                   <button
                     onClick={() => go(-1)}
-                    className="w-11 h-11 flex items-center justify-center rounded-full border border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:border-indigo-400 hover:text-indigo-600 dark:hover:border-indigo-500 dark:hover:text-indigo-400 transition-all duration-200"
+                    className="w-11 h-11 flex items-center justify-center rounded-full border border-gray-300 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-indigo-400 hover:text-indigo-600 dark:hover:border-indigo-500 dark:hover:text-indigo-400 transition-all duration-200"
                     aria-label="Previous project"
                   >
                     <FiChevronLeft size={20} />
                   </button>
                   <button
                     onClick={() => go(1)}
-                    className="w-11 h-11 flex items-center justify-center rounded-full border border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:border-indigo-400 hover:text-indigo-600 dark:hover:border-indigo-500 dark:hover:text-indigo-400 transition-all duration-200"
+                    className="w-11 h-11 flex items-center justify-center rounded-full border border-gray-300 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-indigo-400 hover:text-indigo-600 dark:hover:border-indigo-500 dark:hover:text-indigo-400 transition-all duration-200"
                     aria-label="Next project"
                   >
                     <FiChevronRight size={20} />
