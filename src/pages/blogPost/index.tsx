@@ -56,7 +56,7 @@ export const Component: React.FC = () => {
             {/* Back link */}
             <Link
               to={{ pathname: '/', hash: 'blog' }}
-              className="inline-flex items-center gap-1.5 text-sm text-gray-400 dark:text-gray-500 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors mb-8 group"
+              className="inline-flex items-center gap-1.5 text-sm text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors mb-8 group"
             >
               <FiArrowLeft size={14} className="group-hover:-translate-x-0.5 transition-transform" />
               All posts
@@ -68,7 +68,7 @@ export const Component: React.FC = () => {
             </h1>
 
             {/* Date */}
-            <div className="flex items-center gap-1.5 text-sm text-gray-400 dark:text-gray-500 mb-10">
+            <div className="flex items-center gap-1.5 text-sm text-gray-600 dark:text-gray-400 mb-10">
               <FiCalendar size={13} />
               <time dateTime={post.date}>{formattedDate}</time>
             </div>

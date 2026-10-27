@@ -21,7 +21,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, index }) => {
       initial={{ opacity: 0, y: 30 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.5, delay: index * 0.1, ease: 'easeOut' }}
-      className="block bg-white dark:bg-gray-800/60 rounded-2xl overflow-hidden border border-gray-100 dark:border-gray-700/50 hover:shadow-md hover:-translate-y-1 transition-all duration-200"
+      className="block bg-white dark:bg-gray-800/60 rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-700/50 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200"
     >
       {post.image ? (
         <img
@@ -40,7 +40,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, index }) => {
         <h3 className="text-sm font-semibold mb-3 text-gray-900 dark:text-white line-clamp-2 leading-snug">
           {post.title}
         </h3>
-        <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed line-clamp-3">
+        <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed line-clamp-3">
           {post.excerpt}
         </p>
       </div>
@@ -57,7 +57,7 @@ const Blog: React.FC<BlogProps> = ({ posts }) => {
   const isInView = useInView(ref, { once: true, margin: '-60px' });
 
   return (
-    <section id="blog" className="bg-gray-50 dark:bg-gray-900 py-20 border-t border-gray-100 dark:border-gray-800 scroll-mt-16">
+    <section id="blog" className="bg-slate-100 dark:bg-gray-900 py-20 border-t border-slate-200 dark:border-gray-800 scroll-mt-16">
       <div className="mx-auto max-w-4xl px-4">
         <motion.div
           ref={ref}
@@ -66,13 +66,13 @@ const Blog: React.FC<BlogProps> = ({ posts }) => {
           transition={{ duration: 0.5 }}
           className="mb-12"
         >
-          <p className="text-xs font-mono text-indigo-500 dark:text-indigo-400 tracking-[0.2em] uppercase mb-2">
+          <p className="text-xs font-mono text-indigo-600 dark:text-indigo-400 tracking-[0.2em] uppercase mb-2">
             04 — Blog
           </p>
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Latest Writing</h2>
         </motion.div>
         {posts.length === 0 ? (
-          <p className="py-16 text-center text-gray-400 dark:text-gray-500">
+          <p className="py-16 text-center text-gray-500 dark:text-gray-500">
             No posts yet — check back soon.
           </p>
         ) : (

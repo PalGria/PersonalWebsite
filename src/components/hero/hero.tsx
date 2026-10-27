@@ -40,8 +40,8 @@ const itemVariants = {
 
 // Colours use `dark:` variants (not the JS theme) so the prerendered markup is
 // correct for both themes before hydration.
-const iconClass = 'text-indigo-800/50 hover:text-indigo-600 dark:text-white/60 dark:hover:text-blue-400 transition-colors hover:scale-110 transform duration-200';
-const iconClassGh = 'text-indigo-800/50 hover:text-indigo-900 dark:text-white/60 dark:hover:text-gray-300 transition-colors hover:scale-110 transform duration-200';
+const iconClass = 'text-indigo-800/80 hover:text-indigo-600 dark:text-white/60 dark:hover:text-blue-400 transition-colors hover:scale-110 transform duration-200';
+const iconClassGh = 'text-indigo-800/80 hover:text-indigo-900 dark:text-white/60 dark:hover:text-gray-300 transition-colors hover:scale-110 transform duration-200';
 
 const Hero: React.FC<HeroProps> = ({ title, subtitle, twitterLink, linkedinLink, githubLink }) => {
   return (
@@ -87,12 +87,12 @@ const Hero: React.FC<HeroProps> = ({ title, subtitle, twitterLink, linkedinLink,
       >
         {/* Availability badge */}
         <motion.div
-          className="flex items-center gap-2.5 px-5 py-2 rounded-full border border-indigo-300/40 bg-indigo-100/60 dark:border-white/15 dark:bg-white/5 backdrop-blur-sm mb-8"
+          className="flex items-center gap-2.5 px-5 py-2 rounded-full border border-indigo-300 bg-indigo-100 dark:border-white/15 dark:bg-white/5 backdrop-blur-sm mb-8"
           variants={itemVariants}
           transition={{ duration: 0.6, ease: 'easeOut' }}
         >
           <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse flex-shrink-0" />
-          <span className="text-indigo-800/80 dark:text-white/75 text-sm font-light tracking-wider">Available for new roles</span>
+          <span className="text-indigo-900 dark:text-white/75 text-sm font-light tracking-wider">Available for new roles</span>
         </motion.div>
 
         {/* Name */}
@@ -115,7 +115,7 @@ const Hero: React.FC<HeroProps> = ({ title, subtitle, twitterLink, linkedinLink,
 
         {/* Subtitle */}
         <motion.p
-          className="text-lg md:text-xl text-indigo-900/60 dark:text-white/70 mb-10 text-center font-light tracking-wide max-w-lg"
+          className="text-lg md:text-xl text-indigo-900/85 dark:text-white/70 mb-10 text-center font-light tracking-wide max-w-lg"
           variants={itemVariants}
           transition={{ duration: 0.6, ease: 'easeOut' }}
         >
@@ -149,7 +149,7 @@ const Hero: React.FC<HeroProps> = ({ title, subtitle, twitterLink, linkedinLink,
       {/* Scroll indicator — centred with inset-x-0 + mx-auto because framer-motion's
           inline transform for `y` would override a translate-x centring class */}
       <motion.button
-        className="absolute bottom-8 inset-x-0 mx-auto w-fit flex flex-col items-center gap-1.5 text-indigo-900/60 dark:text-white/50 hover:opacity-70 transition-colors z-10"
+        className="absolute bottom-8 inset-x-0 mx-auto w-fit flex flex-col items-center gap-1.5 text-indigo-900/80 dark:text-white/50 hover:opacity-70 transition-colors z-10"
         animate={{ y: [0, 7, 0] }}
         transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
         onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}

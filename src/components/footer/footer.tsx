@@ -8,10 +8,10 @@ const Footer: React.FC = () => {
         <Link to="/" className="font-bold tracking-widest text-sm hover:opacity-70 transition-opacity">
           JMPA
         </Link>
-        <p className="text-gray-500 text-sm">
+        <p className="text-gray-400 text-sm">
           &copy; {new Date().getFullYear()} Jose Manuel Palau Alegria
         </p>
-        <span className="text-gray-600 text-xs font-mono">
+        <span className="text-gray-400 text-xs font-mono">
           React · TypeScript · Vite
         </span>
       </div>

@@ -21,7 +21,7 @@ const Resume: React.FC<ResumeProps> = ({ leftColumn, rightColumn }) => {
           title={
             <div className="flex flex-wrap justify-between items-start gap-4 mb-2">
               <div>
-                <p className="text-xs font-mono text-indigo-500 tracking-[0.2em] uppercase mb-2">
+                <p className="text-xs font-mono text-indigo-600 tracking-[0.2em] uppercase mb-2">
                   02 — Resume
                 </p>
                 <h2>My Resume</h2>
