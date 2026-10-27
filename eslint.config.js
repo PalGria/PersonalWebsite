@@ -8,7 +8,8 @@ import pluginReactHooks from "eslint-plugin-react-hooks";
 /** @type {import('eslint').Linter.Config[]} */
 export default [
   {
-    ignores: ["dist/**", ".vite-react-ssg-temp/**"],
+    // Build output, including the deploy folders on the VPS
+    ignores: ["dist/**", "dist-old/**", "live/**", "live-old/**", ".vite-react-ssg-temp/**"],
   },
   {
     files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"],
